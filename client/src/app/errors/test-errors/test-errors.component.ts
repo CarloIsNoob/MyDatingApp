@@ -36,7 +36,7 @@ export class TestErrorsComponent {
   get500Error() {
     this.http.get(this.baseUrl + 'buggy/server-error').subscribe({
       next: response => console.log(response),
-      error: error => console.log(error)
+      error: error => console.log(error.details)
     })
   }
 
