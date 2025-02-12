@@ -32,4 +32,20 @@ app.UseWebSockets();
 
 app.MapControllers();
 
+using var scoped = app.Services.CreateScope();
+
+var services = scoped.ServiceProvider;
+try
+{
+    var context = services.GetRequiredService<DataContext>();
+    await context.Database.MigrateAsync();
+    await Seed.SeedUsers(context);
+}
+catch (Exception ex)
+{
+    
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occured during migration");
+}
+
 app.Run();
