@@ -105,11 +105,13 @@ namespace API.Controllers
 
             var photo = user.Photos.FirstOrDefault(x => x.ID == photoId);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             if (photo.PublicId != null)
             {
                 var result = await photoService.DeletePhotoAsync(photo.PublicId);
                 if (result.Error != null) return BadRequest(result.Error.Message);
             }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             user.Photos.Remove(photo);
 
