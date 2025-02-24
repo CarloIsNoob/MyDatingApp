@@ -13,15 +13,18 @@
             <li class="nav-item">
               <a routerLink="/messages" class="nav-link ">Messages</a>
             </li>
+            <li class="nav-item" *appHasRole="['Admin', 'Moderator']">
+              <a routerLink="/admin" class="nav-link ">Admin</a>
+            </li>
           }
           <li class="nav-item">
             <a routerLink="/errors" class="nav-link ">Errors</a>
-          </li>
+          </li>   
         </ul>
 
       @if (accountService.currentUser()) {
         <div class="dropdown" dropdown>
-          <img class="rounded-circle me-2" src="{{accountService.currentUser()?.photoUrl || './assets/user.png'}}" alt="user main image">
+          <img class="rounded-circle me-2" [src]="accountService.currentUser()?.photoUrl || './assets/user.png'" alt="user main image">
           <a dropdownToggle class="dropdow-toggle text-light text-decoration-none">
             Welcome {{accountService.currentUser()?.knownAs}}
           </a>

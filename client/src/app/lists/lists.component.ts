@@ -28,12 +28,12 @@ export class ListsComponent implements OnInit, OnDestroy{
     switch (this.predicate) {
       case 'liked': return 'Members you like';
       case 'likedBy': return 'Members who like you';
-      default: return 'Mutual'
+      default: return 'Mutual Likes'
     }
   }
 
   loadLikes() {
-    this.likesService.getLikes(this.predicate, this.pageNumber, this.pageSize)
+    this.likesService.getLikes(this.predicate, this.pageNumber, this.pageSize);
   }
 
   pageChanged(event: any) {
