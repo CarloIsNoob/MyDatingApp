@@ -3,6 +3,7 @@ import { Member } from '../../_models/member';
 import { RouterLink } from '@angular/router';
 import { LikesService } from '../../_services/likes.service';
 import { idLocale } from 'ngx-bootstrap/chronos';
+import { PresenceService } from '../../_services/presence.service';
 
 @Component({
   selector: 'app-member-card',
@@ -12,8 +13,10 @@ import { idLocale } from 'ngx-bootstrap/chronos';
 })
 export class MemberCardComponent {
   member = input.required<Member>();
+  private presenceService = inject(PresenceService);
   private likeService = inject(LikesService);
   hasLiked = computed(() => this.likeService.likeIds().includes(this.member().id))
+  isOnLine = computed(() => this.presenceService.onlineUsers().includes(this.member().username));
 
   toggleLike() {
     this.likeService.toggleLike(this.member().id).subscribe({
