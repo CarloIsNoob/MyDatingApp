@@ -1,17 +1,11 @@
-using System.Text;
 using API.Data;
 using API.Entities;
 using API.Extensions;
 using API.Extentions;
-using API.Interfaces;
 using API.Middleware;
-using API.Services;
 using API.SignalR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +16,7 @@ builder.Services.AddIdentityServices(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseMiddleware<ExeptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
 .WithOrigins("http://localhost:4200", "https://localhost:4200"));
@@ -31,6 +25,10 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+
+app.UseStaticFiles();
+
 app.UseWebSockets();
 
 app.MapControllers();
@@ -38,6 +36,8 @@ app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
 
 app.MapHub<MessageHub>("hubs/message");
+
+app.MapFallbackToController("Index", "Fallback");
 
 using var scoped = app.Services.CreateScope();
 
